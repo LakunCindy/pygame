@@ -27,8 +27,15 @@ while running:
     for projectile in game.player.all_projectiles:
         projectile.move()
 
+    #recup les monstres du jeu
+    for monster in game.all_monsters:
+        monster.forward()
+
     #appliquer les projectiles
     game.player.all_projectiles.draw(screen)
+
+    #appliquer l'ensemble des images de mon groupe de monstre
+    game.all_monsters.draw(screen)
 
     #verfier si le joueur souhaite aller à gauche ou à droite
     if game.pressed.get(pygame.K_RIGHT) and game.player.rect.x + game.player.rect.width < screen.get_width():
