@@ -1,4 +1,5 @@
 import pygame
+from sprite import Projectile
 
 #creer une premier class qui represente le premier joueur
 class Player(pygame.sprite.Sprite):
@@ -12,6 +13,11 @@ class Player(pygame.sprite.Sprite):
          self.rect = self.image.get_rect()
          self.rect.x = 400
          self.rect.y = 500
+         self.all_projectiles = pygame.sprite.Group()
+
+      def launch_projectile(self):
+         #creer une nouvelle instance de la classe projectile
+         self.all_projectiles.add(Projectile(self))
 
       def move_right(self):
          self.rect.x += self.velocity
