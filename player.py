@@ -47,6 +47,7 @@ class Player(animation.AnimateSprite):
          self.all_projectiles.add(Projectile(self))
          #demarrer l'animation du lancer
          self.start_animation()
+         self.game.sound_manager.play('tir')
 
       def move_right(self):
          # si le joueur n'est pas en collision avec un monstre

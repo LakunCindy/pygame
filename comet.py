@@ -16,6 +16,7 @@ class Comet(pygame.sprite.Sprite):
 
     def remove(self):
         self.comet_event.all_comets.remove(self) 
+        self.comet_event.game.sound_manager.play('meteorite')
         #si il n'y a plus de boule de feu sur le jeu
         if len(self.comet_event.all_comets) == 0:
             #remettre la jauge au depart

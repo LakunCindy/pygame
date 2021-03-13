@@ -60,7 +60,13 @@ while running:
         elif event.type == pygame.KEYDOWN:
             game.pressed[event.key] = True
             if event.key == pygame.K_SPACE:
-                game.player.launch_projectile()
+                if game.is_playing:
+                    game.player.launch_projectile()
+                else:
+                    #mettre le jeu en mode lancé
+                    game.start()
+                    game.sound_manager.play('click')
+                    
         elif event.type == pygame.KEYUP: #si la touche n'est plus utilisé
             game.pressed[event.key] = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -68,6 +74,7 @@ while running:
             if play_button_rect.collidepoint(event.pos):
                 #mettre le jeu en mode lancé
                 game.start()
+                game.sound_manager.play('click')
     #fixer le nombre de fps
     clock.tick(FPS)
 
