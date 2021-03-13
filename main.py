@@ -63,6 +63,6 @@ while running:
             #verification poru savoir si la souris est en collision avec le button jouer
             if play_button_rect.collidepoint(event.pos):
                 #mettre le jeu en mode lancé
-                game.start()
+                game.start() 
 
 

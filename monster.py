@@ -16,11 +16,19 @@ class Monster(pygame.sprite.Sprite):
     def damage(self,amount):
         #infliger les degats
         self.health -= amount
-
+        #vérifier si le nb de points de vie est inférieur ou égal à 0
         if self.health <= 0:
             self.rect.x = 1000 + random.randint(0,300)
             self.velocity = random.randint(1,2)
             self.health = self.max_health
+
+            #si la barre d'event est chargé à son maxi on ne fait pas repop les monstres
+            if self.game.comet_event.is_full_loaded():
+                #retirer du jeu
+                self.game.all_monsters.remove(self)
+
+                #appel de la méthode pour essayer de déclencher la pluie de cometes
+                self.game.comet_event.attempt_fall()
 
     def update_health_bar(self,surface):
         #définir une couleur pour une jauge de vie

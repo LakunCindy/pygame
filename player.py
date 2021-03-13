@@ -8,7 +8,7 @@ class Player(pygame.sprite.Sprite):
          self.game = game
          self.health = 100
          self.max_health = 100
-         self.attack = 10
+         self.attack = 100
          self.velocity = 5
          self.image = pygame.image.load('assets/player.png')
          self.rect = self.image.get_rect()
