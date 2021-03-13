@@ -4,6 +4,10 @@ import math
 
 pygame.init()
 
+#définir une clock 
+clock = pygame.time.Clock()
+FPS = 200
+
 #générer la fenetre du jeu
 pygame.display.set_caption("Comet fall Game")
 screen = pygame.display.set_mode((1080,720))
@@ -42,7 +46,7 @@ while running:
         #ajouté mon écran de bienvenue
         screen.blit(play_button, play_button_rect)
         screen.blit(banner,banner_rect)
-
+        
     #mettre à jour l'ecran
     pygame.display.flip()
 
@@ -63,6 +67,8 @@ while running:
             #verification poru savoir si la souris est en collision avec le button jouer
             if play_button_rect.collidepoint(event.pos):
                 #mettre le jeu en mode lancé
-                game.start() 
+                game.start()
+    #fixer le nombre de fps
+    clock.tick(FPS)
 
 
