@@ -1,5 +1,6 @@
 import pygame
 from game import Game
+import math
 
 pygame.init()
 
@@ -9,6 +10,19 @@ screen = pygame.display.set_mode((1080,720))
 
 #Charger l'arrière plan
 background = pygame.image.load('assets/bg.jpg')
+
+#importer charger notre bannière
+banner = pygame.image.load('assets/banner.png')
+banner = pygame.transform.scale(banner,(500,500))
+banner_rect = banner.get_rect()
+banner_rect.x = math.ceil(screen.get_width() / 4)
+
+#importer charger notre bouton pour lancer la partie
+play_button = pygame.image.load('assets/button.png')
+play_button = pygame.transform.scale(play_button, (400,150))
+play_button_rect = play_button.get_rect()
+play_button_rect.x = math.ceil(screen.get_width() / 3.33)
+play_button_rect.y = math.ceil(screen.get_height() / 2)
 
 game = Game()
 
@@ -20,28 +34,14 @@ while running:
     #arrière plan
     screen.blit(background,(0,-200))
 
-    #appliquer image du joueur
-    screen.blit(game.player.image,game.player.rect)
-
-    #recup les projectiles du joueur
-    for projectile in game.player.all_projectiles:
-        projectile.move()
-
-    #recup les monstres du jeu
-    for monster in game.all_monsters:
-        monster.forward()
-
-    #appliquer les projectiles
-    game.player.all_projectiles.draw(screen)
-
-    #appliquer l'ensemble des images de mon groupe de monstre
-    game.all_monsters.draw(screen)
-
-    #verfier si le joueur souhaite aller à gauche ou à droite
-    if game.pressed.get(pygame.K_RIGHT) and game.player.rect.x + game.player.rect.width < screen.get_width():
-        game.player.move_right()
-    if game.pressed.get(pygame.K_LEFT) and game.player.rect.x > 0:
-        game.player.move_left()
+    #verifier si notre jeu a commencé
+    if game.is_playing:
+        #declencher les instructions de la partie
+        game.update(screen)
+    else:
+        #ajouté mon écran de bienvenue
+        screen.blit(play_button, play_button_rect)
+        screen.blit(banner,banner_rect)
 
     #mettre à jour l'ecran
     pygame.display.flip()
@@ -59,4 +59,10 @@ while running:
                 game.player.launch_projectile()
         elif event.type == pygame.KEYUP: #si la touche n'est plus utilisé
             game.pressed[event.key] = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            #verification poru savoir si la souris est en collision avec le button jouer
+            if play_button_rect.collidepoint(event.pos):
+                #mettre le jeu en mode lancé
+                game.start()
+
 
