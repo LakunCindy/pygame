@@ -1,17 +1,18 @@
 import pygame
 import random
-class Monster(pygame.sprite.Sprite):
+import animation 
+class Monster(animation.AnimateSprite):
     def __init__(self,game):
-        super().__init__()
+        super().__init__("mummy")
         self.game = game
         self.health = 100
         self.max_health = 100
         self.attack = 0.3
-        self.image = pygame.image.load('assets/mummy.png')
         self.rect = self.image.get_rect()
         self.rect.x = 1000 + random.randint(0,300)
         self.rect.y = 540
         self.velocity = random.randint(1,2)
+        self.start_animation()
 
     def damage(self,amount):
         #infliger les degats
@@ -45,9 +46,10 @@ class Monster(pygame.sprite.Sprite):
         # dessiner notre barre de vie
         pygame.draw.rect(surface, back_bar_color, back_bar_position)
         pygame.draw.rect(surface, bar_color, bar_position)
+
+    def update_animation(self):
+        self.animate(loop=True)
         
-
-
     def forward(self):
         #le deplacement ne se fait que si il ny'a pas de collision avec un groupe de joueur
         if not self.game.check_collision(self, self.game.all_players):
