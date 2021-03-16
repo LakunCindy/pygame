@@ -1,5 +1,5 @@
 import pygame
-from sprite import Projectile
+from projectile import Projectile
 import animation
 
 #creer une premier class qui represente le premier joueur
@@ -13,8 +13,10 @@ class Player(animation.AnimateSprite):
          self.velocity = 5
          self.rect = self.image.get_rect()
          self.rect.x = 400
-         self.rect.y = 500
+         self.rect.y = 470
          self.all_projectiles = pygame.sprite.Group()
+         self.isJump = False
+         self.jumpCount = 10
 
       def damage(self,amount):
          if self.health - amount > amount:
@@ -45,14 +47,17 @@ class Player(animation.AnimateSprite):
       def launch_projectile(self):
          #creer une nouvelle instance de la classe projectile
          self.all_projectiles.add(Projectile(self))
-         #demarrer l'animation du lancer
-         self.start_animation()
          self.game.sound_manager.play('tir')
 
       def move_right(self):
+         #demarrer l'animation 
+         self.start_animation()
          # si le joueur n'est pas en collision avec un monstre
          if not self.game.check_collision(self, self.game.all_monsters):
             self.rect.x += self.velocity
 
       def move_left(self):
+         #demarrer l'animation 
+         self.start_animation()
          self.rect.x -= self.velocity
+             

@@ -31,7 +31,6 @@ class CometFallEvent:
         for i in range(1,10):     
             #la jauge d'event est totalement chargé
             if self.is_full_loaded() and len(self.game.all_monsters) == 0:
-                print('Pluie de comette')
                 self.meteor_fall()
                 self.fall_mode = True #active l'event
     

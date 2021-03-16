@@ -10,8 +10,8 @@ class Monster(animation.AnimateSprite):
         self.attack = 0.3
         self.rect = self.image.get_rect()
         self.rect.x = 1000 + random.randint(0,300)
-        self.rect.y = 540 - offset
-        self.velocity = random.randint(1,3)
+        self.rect.y = 500 - offset
+        self.velocity = random.randint(1,2)
         self.start_animation()
         self.loot_amount = 10
 
@@ -69,19 +69,19 @@ class Monster(animation.AnimateSprite):
             #infliger des degats
             self.game.player.damage(self.attack)
 
-#definir une class pour la momie
-class Mummy(Monster):
+#définir une class pour les mobs
+class BadWorm(Monster):
     def __init__(self,game):
-        super().__init__(game,"mummy", (130,130))
+        super().__init__(game,"bad_worms", (130,130))
         self.set_speed(3)
         self.set_loot_amount(20)
-
-#definir une class pour l'alien
-class Alien(Monster):
+#définir une class pour le boss
+class Boss(Monster):
     def __init__(self,game):
-        super().__init__(game,"alien", (300,300), 130)
+        super().__init__(game,"boss", (300,300), 130)
         self.health = 250
         self.max_health = 250
         self.attack = 0.8
         self.set_speed(1)
         self.set_loot_amount(50)
+

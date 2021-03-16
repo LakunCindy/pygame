@@ -6,14 +6,14 @@ pygame.init()
 
 #définir une clock 
 clock = pygame.time.Clock()
-FPS = 200
+FPS = 60
 
 #générer la fenetre du jeu
-pygame.display.set_caption("Comet fall Game")
+pygame.display.set_caption("World War Worms")
 screen = pygame.display.set_mode((1080,720))
 
 #Charger l'arrière plan
-background = pygame.image.load('assets/bg.jpg')
+background = pygame.image.load('assets/background.jpg')
 
 #importer charger notre bannière
 banner = pygame.image.load('assets/banner.png')
@@ -36,7 +36,7 @@ while running:
     #tant que le jeu est actif
 
     #arrière plan
-    screen.blit(background,(0,-200))
+    screen.blit(background,(0,0))
 
     #verifier si notre jeu a commencé
     if game.is_playing:
@@ -58,7 +58,7 @@ while running:
             pygame.quit()
             #détecter si un joueur lache une touche du clavier
         elif event.type == pygame.KEYDOWN:
-            game.pressed[event.key] = True
+            game.pressed[event.key] = True               
             if event.key == pygame.K_SPACE:
                 if game.is_playing:
                     game.player.launch_projectile()
@@ -75,7 +75,10 @@ while running:
                 #mettre le jeu en mode lancé
                 game.start()
                 game.sound_manager.play('click')
+                if game.is_playing:
+                    pygame.MOUSEBUTTONDOWN = False
     #fixer le nombre de fps
     clock.tick(FPS)
 
 
+ 

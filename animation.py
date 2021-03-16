@@ -50,5 +50,7 @@ def load_animation_images(sprite_name):
 animations = {
     'mummy': load_animation_images('mummy'),
     'player': load_animation_images('player'),
-    'alien': load_animation_images('alien')
+    'alien': load_animation_images('alien'),
+    'boss': load_animation_images('boss'),
+    'bad_worms': load_animation_images('bad_worms')
 }

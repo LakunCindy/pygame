@@ -1,6 +1,6 @@
 import pygame
 from player import Player
-from monster import Monster, Mummy, Alien
+from monster import Monster, BadWorm, Boss
 from comet_event import CometFallEvent
 from sound import SoundManager
 
@@ -22,11 +22,10 @@ class Game:
         self.sound_manager = SoundManager()
 
     def start(self):
-        print('start')
         self.is_playing = True
-        self.spawn_monster(Mummy)
-        self.spawn_monster(Mummy)
-        self.spawn_monster(Alien)
+        self.spawn_monster(BadWorm)
+        self.spawn_monster(BadWorm)
+        self.spawn_monster(Boss)
 
     def game_over(self):
         #remettre le jeu à neuf, retirer les monstres, remettre le joeueur à 100 vie, jeu en attente
@@ -81,11 +80,17 @@ class Game:
         #appliquer l'ensemble des images de mon groupe de comettes
         self.comet_event.all_comets.draw(screen)
 
-        #verfier si le joueur souhaite aller à gauche ou à droite
+        #verfier si le joueur souhaite aller à gauche ou à droite ou sauter
         if self.pressed.get(pygame.K_RIGHT) and self.player.rect.x + self.player.rect.width < screen.get_width():
             self.player.move_right()
         if self.pressed.get(pygame.K_LEFT) and self.player.rect.x > 0:
             self.player.move_left()
+        # if self.pressed.get(pygame.K_UP):
+        #     self.player.isJump = True
+        #     self.player.jump()
+
+            
+
     
     def check_collision(self,sprite,group):
         return pygame.sprite.spritecollide(sprite, group, False, pygame.sprite.collide_mask)

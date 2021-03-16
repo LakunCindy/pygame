@@ -4,19 +4,19 @@ import pygame
 class Projectile(pygame.sprite.Sprite):
     def __init__(self, player):
         super().__init__()
-        self.velocity = 3
+        self.velocity = 7
         self.player = player
-        self.image = pygame.image.load('assets/projectile.png')
-        self.image = pygame.transform.scale(self.image,(50,50))
+        self.image = pygame.image.load('assets/bullet.png')
+        self.image = pygame.transform.scale(self.image,(40,40))
         self.rect = self.image.get_rect()
-        self.rect.x = player.rect.x + 120
+        self.rect.x = player.rect.x + 160
         self.rect.y = player.rect.y + 80
         self.origin_image = self.image
         self.angle = 0
 
     def rotate(self):
         #tourner le projectile
-        self.angle += 8
+        self.angle = -45
         self.image = pygame.transform.rotozoom(self.origin_image,self.angle,1)
         self.rect = self.image.get_rect(center=self.rect.center)
 
