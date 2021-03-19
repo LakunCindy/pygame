@@ -85,13 +85,13 @@ class Game:
             self.player.move_right()
         if self.pressed.get(pygame.K_LEFT) and self.player.rect.x > 0:
             self.player.move_left()
-        # if self.pressed.get(pygame.K_UP):
-        #     self.player.isJump = True
-        #     self.player.jump()
+
+        #CODE JUMP
+        if self.pressed.get(pygame.K_UP):
+            self.player.jump()
 
             
-
-    
+            
     def check_collision(self,sprite,group):
         return pygame.sprite.spritecollide(sprite, group, False, pygame.sprite.collide_mask)
 

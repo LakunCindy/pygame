@@ -15,8 +15,13 @@ class Player(animation.AnimateSprite):
          self.rect.x = 400
          self.rect.y = 470
          self.all_projectiles = pygame.sprite.Group()
+      
+         #CODE JUMP
+         self.velocity_jump = 5      
          self.isJump = False
-         self.jumpCount = 10
+         self.jumpCount = 8
+
+
 
       def damage(self,amount):
          if self.health - amount > amount:
@@ -60,4 +65,27 @@ class Player(animation.AnimateSprite):
          #demarrer l'animation 
          self.start_animation()
          self.rect.x -= self.velocity
+
+      #CODE JUMP
+      def jump(self):
+         keys = pygame.key.get_pressed()
+         if not (self.isJump):
+            if keys[pygame.KEYDOWN] and self.rect.y >= 470 - self.velocity_jump:
+                  self.rect.y -= self.velocity_jump
+
+            if keys[pygame.KEYDOWN] and self.rect.y <= 570 - self.velocity_jump:
+                  self.rect.y += self.velocity_jump
+
+            if keys[pygame.K_UP]:
+                  self.isJump = True
+         else:
+            if self.jumpCount >= -8:
+                  self.rect.y -= (self.jumpCount * abs(self.jumpCount)) * 0.5
+                  self.jumpCount -= 1
+            else:
+                  self.jumpCount = 8
+                  self.isJump = False
+
+
+
              
