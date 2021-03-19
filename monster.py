@@ -25,7 +25,7 @@ class Monster(animation.AnimateSprite):
     def damage(self,amount):
         #infliger les degats
         self.health -= amount
-        #vérifier si le nb de points de vie est inférieur ou égal à 0
+        #vérifier si le nb de points de vie est inférieur ou égal à 
         if self.health <= 0:
             self.rect.x = 1000 + random.randint(0,300)
             self.velocity = random.randint(1,self.default_speed)
@@ -64,6 +64,11 @@ class Monster(animation.AnimateSprite):
         #le deplacement ne se fait que si il ny'a pas de collision avec un groupe de joueur
         if not self.game.check_collision(self, self.game.all_players):
             self.rect.x -= self.velocity
+            if self.rect.x <= 0:
+                self.rect.x = 1000 + random.randint(0,300)
+                self.velocity = random.randint(1,self.default_speed)
+                self.health = self.max_health
+    
         #si le monstre est en collision avec le joueur
         else:
             #infliger des degats

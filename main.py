@@ -151,8 +151,8 @@ while running:
                 if pseudo_text and server_text and port_text != '':
                     game.start()
                     game.sound_manager.play('click')
-                    if game.is_playing:
-                        pygame.MOUSEBUTTONDOWN = False
+                    # if game.is_playing:
+                    #     pygame.MOUSEBUTTONDOWN = False
             if pseudo_input_rect.collidepoint(event.pos):
                 pseudo_active = True
             else:
