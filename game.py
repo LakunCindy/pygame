@@ -10,7 +10,7 @@ class Game:
         self.is_playing = False
         #générer le joueur
         self.all_players = pygame.sprite.Group()
-        self.player = Player(self)
+        self.player = Player(self,'player')
         self.all_players.add(self.player)
         #gérer l'event
         self.comet_event = CometFallEvent(self)

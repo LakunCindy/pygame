@@ -4,8 +4,8 @@ import animation
 
 #creer une premier class qui represente le premier joueur
 class Player(animation.AnimateSprite):
-      def __init__(self,game):
-         super().__init__('player')
+      def __init__(self,game,name):
+         super().__init__(name)
          self.game = game
          self.health = 100
          self.max_health = 100
@@ -60,4 +60,9 @@ class Player(animation.AnimateSprite):
          #demarrer l'animation 
          self.start_animation()
          self.rect.x -= self.velocity
+
+
+class Player2(Player):
+   def __init__(self):
+      super().__init__(game,'worms')
              
