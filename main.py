@@ -118,7 +118,10 @@ while running:
             pygame.quit()
             #détecter si un joueur lache une touche du clavier
         elif event.type == pygame.KEYDOWN:
-            game.pressed[event.key] = True        
+            game.pressed[event.key] = True   
+            if event.key == pygame.K_UP:
+                if game.is_playing:
+                    game.player.isJump = True  
             if event.key == pygame.K_SPACE:
                 if game.is_playing:
                     game.player.launch_projectile()

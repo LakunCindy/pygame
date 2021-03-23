@@ -20,6 +20,7 @@ class Game:
         self.pressed = {}
         self.font = pygame.font.Font("assets/font.ttf", 25)
         self.sound_manager = SoundManager()
+    
 
     def start(self):
         self.is_playing = True
@@ -85,10 +86,8 @@ class Game:
             self.player.move_right()
         if self.pressed.get(pygame.K_LEFT) and self.player.rect.x > 0:
             self.player.move_left()
-
-        #CODE JUMP
-        if self.pressed.get(pygame.K_UP):
-            self.player.jump()
+        
+        self.player.jump()
 
             
             
