@@ -72,7 +72,11 @@ class Monster(animation.AnimateSprite):
         #si le monstre est en collision avec le joueur
         else:
             #infliger des degats
-            self.game.player.damage(self.attack)
+            if pygame.sprite.collide_rect(self.game.player,self):
+                self.game.player.damage(self.attack)
+            if pygame.sprite.collide_rect(self.game.player2,self):
+                self.game.player2.damage(self.attack)
+        
 
 #définir une class pour les mobs
 class BadWorm(Monster):

@@ -12,6 +12,7 @@ class Player(animation.AnimateSprite):
          self.attack = 100
          self.velocity = 5
          self.rect = self.image.get_rect()
+         self.init_rect_x = 400
          self.rect.x = 400
          self.rect.y = 470
          self.all_projectiles = pygame.sprite.Group()
@@ -26,7 +27,21 @@ class Player(animation.AnimateSprite):
             self.health -= amount
          else:
             #si le joueur n'a plus de point de vie
-            self.game.game_over()
+            if self.game.player2.health > 0 :
+               self.rect.x = 2000
+               self.health = -1
+               self.game.all_players.remove(self)
+               if len(self.game.all_players) == 0:
+                  self.game.game_over()
+
+            if self.game.player.health > 0 :
+               self.rect.x = 2000
+               self.health = -1
+               self.game.all_players.remove(self)
+               if len(self.game.all_players) == 0:
+                  self.game.game_over()
+
+   
 
       def update_animation(self):
          self.animate()
@@ -58,6 +73,7 @@ class Player(animation.AnimateSprite):
          # si le joueur n'est pas en collision avec un monstre
          if not self.game.check_collision(self, self.game.all_monsters):
             self.rect.x += self.velocity
+         #if self.game.check_collision(self,self.game.all_monsters) and self.game.player.rect.y == self.game.all_monsters
 
       def move_left(self):
          #demarrer l'animation 
@@ -68,7 +84,7 @@ class Player(animation.AnimateSprite):
       def jump(self):
          keys = pygame.key.get_pressed()
          if self.isJump is True:
-            self.rect.y -= self.velocity_jump * 2
+            self.rect.y -= self.velocity_jump * 3
             self.velocity_jump -= 1
             if self.velocity_jump < -10:
                self.isJump = False

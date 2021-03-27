@@ -32,7 +32,7 @@ pseudo_active = False
 server_placeholder = 'Serveur'
 server_text = 'localhost'
 server_input_rect = pygame.Rect(screen.get_width()/2.5,420,200,32)
-server_active = False
+server_active = False                
 
 #PORT INPUT
 port_placeholder = 'Port'
@@ -122,13 +122,15 @@ while running:
             if event.key == pygame.K_UP:
                 if game.is_playing:
                     game.player.isJump = True  
+            if event.key == pygame.K_z:
+                if game.is_playing:
+                    game.player2.isJump = True            
             if event.key == pygame.K_SPACE:
                 if game.is_playing:
                     game.player.launch_projectile()
-                else:
-                    #mettre le jeu en mode lancé
-                    game.start()
-                    game.sound_manager.play('click')             
+            if event.key == pygame.K_s:
+                if game.is_playing:
+                    game.player2.launch_projectile()              
             if pseudo_active == True:
                 if event.key == pygame.K_BACKSPACE:
                         pseudo_text = pseudo_text[:-1]
