@@ -1,7 +1,6 @@
 import pygame
 from player import Player
 from monster import Monster, BadWorm, Boss
-from platform import Platform
 from comet_event import CometFallEvent
 from sound import SoundManager
 
@@ -19,10 +18,7 @@ class Game:
         self.comet_event = CometFallEvent(self)
         #groupe de monstre
         self.all_monsters = pygame.sprite.Group()
-        #groupe de platform
-        self.platforms = pygame.sprite.Group()
-        p1 = Platform(600,600,150,20)
-        self.platforms.add(p1)
+
         self.score = 0
         self.pressed = {}
         self.font = pygame.font.Font("assets/font.ttf", 25)
@@ -39,7 +35,6 @@ class Game:
         #remettre le jeu à neuf, retirer les monstres, remettre le joeueur à 100 vie, jeu en attente
         self.all_monsters = pygame.sprite.Group()
         self.comet_event.all_comets = pygame.sprite.Group()
-        self.platforms = pygame.sprite.Group()
         self.player.health = self.player.max_health
         self.player2.health = self.player2.max_health
         self.player.rect.x = self.player.init_rect_x
