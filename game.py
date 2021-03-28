@@ -1,3 +1,5 @@
+import json
+
 import pygame
 from player import Player
 from monster import Monster, BadWorm, Boss
@@ -6,11 +8,14 @@ from sound import SoundManager
 
 class Game: 
     def __init__(self):
+        self.id = None
         #definir si le jeu a commencé
+        self.is_host = -1
         self.is_playing = False
+        self.is_ready = False
         #générer le joueur
         self.all_players = pygame.sprite.Group()
-        self.player = Player(self,'worms')
+        self.player = Player(self, 'worms')
         self.player2 = Player(self,'player')
         self.all_players.add(self.player)
         self.all_players.add(self.player2)
@@ -24,6 +29,11 @@ class Game:
         self.font = pygame.font.Font("assets/font.ttf", 25)
         self.sound_manager = SoundManager()
     
+
+    def setId(self, id):
+        self.id = id
+    def connected(self):
+        return self.is_ready
 
     def start(self):
         self.is_playing = True
@@ -42,7 +52,6 @@ class Game:
         self.all_players.add(self.player)
         self.all_players.add(self.player2)
         self.comet_event.reset_percent()
-        self.is_playing = False
         self.score = 0
         self.sound_manager.play('game_over')
 
@@ -55,7 +64,7 @@ class Game:
         screen.blit(score_text,(20,20))
 
         #appliquer image du joueur
-        screen.blit(self.player.image,self.player.rect)
+        screen.blit(self.player.image, self.player.rect)
         screen.blit(self.player2.image,self.player2.rect)
 
         #actualiser la barre de vie du joueur
@@ -107,14 +116,15 @@ class Game:
 
         #verfier si le joueur souhaite aller à gauche ou à droite ou sauter
         if self.pressed.get(pygame.K_RIGHT) and self.player.rect.x + self.player.rect.width < screen.get_width():
-            self.player.move_right()
+            if self.is_host:
+                self.player.move_right()
+            else:
+                self.player2.move_right()
         if self.pressed.get(pygame.K_LEFT) and self.player.rect.x > 0:
-            self.player.move_left()
-
-        if self.pressed.get(pygame.K_d) and self.player2.rect.x + self.player2.rect.width < screen.get_width():
-            self.player2.move_right()
-        if self.pressed.get(pygame.K_q) and self.player2.rect.x > 0:
-            self.player2.move_left()
+            if self.is_host:
+                self.player.move_left()
+            else:
+                self.player2.move_left()
         
         self.player.jump()
         self.player2.jump()
@@ -125,3 +135,26 @@ class Game:
 
     def spawn_monster(self,monster_class_name):
         self.all_monsters.add(monster_class_name.__call__(self))
+
+    def toString(self):
+        retour = {
+            "isGame": True,
+            "id": self.id,
+            "is_host": self.is_host,
+            "is_ready": self.is_ready,
+            "score": self.score,
+            "player": {
+                "health": self.player.health,
+                "x": self.player.rect.x,
+                "y": self.player.rect.y,
+                "projectile": self.player.shoot
+            },
+            "player2": {
+                "health": self.player2.health,
+                "x": self.player2.rect.x,
+                "y": self.player2.rect.y,
+                "projectile": self.player2.shoot
+            }
+        }
+        return json.dumps(retour)
+

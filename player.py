@@ -16,7 +16,7 @@ class Player(animation.AnimateSprite):
          self.rect.x = 400
          self.rect.y = 470
          self.all_projectiles = pygame.sprite.Group()
-      
+         self.shoot = False
          #CODE JUMP
          self.velocity_jump = 10    
          self.isJump = False

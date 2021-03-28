@@ -59,6 +59,7 @@ game = Game()
 
 #boucle tant que cette condition est vrai
 running = True
+
 while running:
     #tant que le jeu est actif
 
