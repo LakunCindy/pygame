@@ -172,6 +172,8 @@ def main(client):
 
             # si le joueur ferme la fenetre
             for event in pygame.event.get():
+                client.send(client.game.toString())
+
                 # si l'event est fermeture de fenetre
                 if event.type == pygame.QUIT:
                     running = False
@@ -179,7 +181,6 @@ def main(client):
                     # détecter si un joueur lache une touche du clavier
                 elif event.type == pygame.KEYDOWN:
                     client.game.pressed[event.key] = True
-                    client.send(client.game.toString())
 
                     if event.key == pygame.K_UP:
                         if client.game.is_playing:
