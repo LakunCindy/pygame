@@ -1,3 +1,4 @@
+import os
 import socket
 import signal  # identifie les signaux pour kill le programme
 import sys  # utilisé pour sortir du programme
@@ -15,7 +16,7 @@ pygame.init()
 class Server:
 
     def __init__(self):
-        serv = "192.168.1.32"
+        serv = os.environ["CONNECTIONIP"]
         port = 5555
         self.connected = set()
         self.games = {}

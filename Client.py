@@ -1,3 +1,4 @@
+import os
 import threading
 import socket
 import time
@@ -66,7 +67,7 @@ class Client:
 
     def __init__(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        serv = "192.168.1.32"
+        serv = os.environ["CONNECTIONIP"]
         port = 5555
         self.socket.connect((serv, port))
         self.listening = True
