@@ -9,9 +9,9 @@ class Monster(animation.AnimateSprite):
         self.max_health = 100
         self.attack = 0.3
         self.rect = self.image.get_rect()
-        self.rect.x = 1000 + random.randint(0,300)
+        self.rect.x = 1100
         self.rect.y = 500 - offset
-        self.velocity = random.randint(1,2)
+        self.velocity = 3
         self.start_animation()
         self.loot_amount = 10
 

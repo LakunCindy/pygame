@@ -10,9 +10,9 @@ class Comet(pygame.sprite.Sprite):
         self.image = pygame.image.load('assets/bombe.png')
         self.image = pygame.transform.scale(self.image,(100,100))
         self.rect = self.image.get_rect()
-        self.velocity = random.randint(1,8)
-        self.rect.x = random.randint(20,800)
-        self.rect.y = - random.randint(0,800)
+        self.velocity = 8
+        self.rect.x = 800
+        self.rect.y = -800
         self.comet_event = comet_event
 
     def remove(self):
