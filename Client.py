@@ -106,13 +106,16 @@ class Client:
             pass
         if data != "":
             jsonInstance = json.loads(data)
+
         if jsonInstance is not None:
+            # IF is game
             self.game.setId(jsonInstance.get("id"))
             self.game.is_ready = jsonInstance.get("is_ready")
             self.game.score = jsonInstance.get("score")
             play1 = jsonInstance.get("player")
             self.game.player.rect.x = play1.get("x")
             self.game.player.rect.y = play1.get("y")
+            self.game.player.health = play1.get("health")
             if play1.get("projectile"):
                 print("PROJECTILE 1")
                 self.game.player.launch_projectile()
@@ -120,10 +123,12 @@ class Client:
             play2 = jsonInstance.get("player2")
             self.game.player2.rect.x = play2.get("x")
             self.game.player2.rect.y = play2.get("y")
+            self.game.player2.health = play2.get("health")
             if play2.get("projectile"):
                 print("PROJECTILE 2")
                 self.game.player2.launch_projectile()
                 self.game.player2.shoot = False
+            #else CHAT 
 
 
 
