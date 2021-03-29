@@ -20,15 +20,15 @@ class Monster(animation.AnimateSprite):
 
     def set_speed(self, speed):
         self.default_speed = speed
-        self.velocity = random.randint(1,3)
+        self.velocity = 3
 
     def damage(self,amount):
         #infliger les degats
         self.health -= amount
         #vérifier si le nb de points de vie est inférieur ou égal à 
         if self.health <= 0:
-            self.rect.x = 1000 + random.randint(0,300)
-            self.velocity = random.randint(1,self.default_speed)
+            self.rect.x = 1000 + 200
+            self.velocity = self.default_speed
             self.health = self.max_health
             #incrementer le score
             self.game.add_score(20)
@@ -65,8 +65,8 @@ class Monster(animation.AnimateSprite):
         if not self.game.check_collision(self, self.game.all_players):
             self.rect.x -= self.velocity
             if self.rect.x <= 0:
-                self.rect.x = 1000 + random.randint(0,300)
-                self.velocity = random.randint(1,self.default_speed)
+                self.rect.x = 1100
+                self.velocity = self.default_speed
                 self.health = self.max_health
     
         #si le monstre est en collision avec le joueur
