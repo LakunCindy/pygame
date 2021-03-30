@@ -4,6 +4,8 @@ import socket
 import time
 import re
 import math
+from json import JSONDecodeError
+
 from game import Game
 import json
 
@@ -63,6 +65,10 @@ play_button_rect = play_button.get_rect()
 play_button_rect.x = math.ceil(screen.get_width() / 3.33)
 play_button_rect.y = math.ceil(screen.get_height() / 1.3)
 
+# Chat
+user_text = ''
+input_rect = pygame.Rect(25, 350, 600, 32)
+active = False
 class Client:
 
     def __init__(self):
@@ -105,7 +111,10 @@ class Client:
         if data is None or data == '':
             pass
         if data != "":
-            jsonInstance = json.loads(data)
+            try:
+                jsonInstance = json.loads(data)
+            except JSONDecodeError:
+                print("Error Getting json : ", jsonInstance)
 
         if jsonInstance is not None:
             # IF is game
@@ -155,11 +164,43 @@ class Client:
             # change if
             screen.blit(background, (0, 0))
             self.game.update(screen)
+            pygame.draw.rect(screen, color, input_rect, 2)
+            text_surface = base_font.render(user_text, True, (255, 255, 255))
+            screen.blit(text_surface, (input_rect.x + 5, input_rect.y + 5))
         else:
             client.game.start()
             client.game.sound_manager.play('click')
 
+def sendMessageChat(event, user_text, active):
+    print(event)
+    if input_rect.collidepoint(event.pos):
+        active = True
+    while active:
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if not input_rect.collidepoint(event.pos):
+                    active = False
+            if event.type == pygame.KEYDOWN:
+                # Remove leter
+                if user_text != '' and event.key == pygame.K_RETURN:
+                    data = json.dumps({"isGame": False, "msg": user_text})
+                    client.send(data)
+                    active = False
+                if active:
+                    if event.key == pygame.K_BACKSPACE:
+                        user_text = user_text[:-1]
+                    else:
+                        user_text += event.unicode
+            if active:
+                color = color_active
+            else:
+                color = color_passive
+            screen.blit(background, (0, 0))
+            pygame.draw.rect(screen, color, input_rect, 2)
+            text_surface = base_font.render(user_text, True, (255, 255, 255))
+            screen.blit(text_surface, (input_rect.x + 5, input_rect.y + 5))
 
+            pygame.display.update()
 def main(client):
     running = True
 
@@ -178,15 +219,27 @@ def main(client):
 
             # si le joueur ferme la fenetre
             for event in pygame.event.get():
-                client.send(client.game.toString())
 
                 # si l'event est fermeture de fenetre
                 if event.type == pygame.QUIT:
                     running = False
                     pygame.quit()
+                    # RESET MESSAGERIE
+                    data_message = {}
+                    data_message['message'] = []
+                    data_message['message'].append({
+                        'isGame': False,
+                        'text_message': "Bienvenue sur worms"
+                    })
+                    with open('message.txt', 'w') as outfile:
+                        json.dump(data_message, outfile)
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    sendMessageChat(event,user_text, active)
+
                     # détecter si un joueur lache une touche du clavier
                 elif event.type == pygame.KEYDOWN:
                     client.game.pressed[event.key] = True
+                    client.send(client.game.toString())
 
                     if event.key == pygame.K_UP:
                         if client.game.is_playing:
@@ -198,11 +251,11 @@ def main(client):
                     if event.key == pygame.K_SPACE:
                         if client.game.is_playing:
                             if client.game.is_host:
-                                client.game.player.launch_projectile()
-                                client.game.player.shoot = True
+                                if client.game.player.canShoot:
+                                    client.game.player.shoot = True
                             else :
-                                client.game.player2.launch_projectile()
-                                client.game.player2.shoot = True
+                                if client.game.player2.canShoot:
+                                    client.game.player2.shoot = True
 
 
 

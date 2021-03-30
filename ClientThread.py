@@ -1,3 +1,5 @@
+import json
+from json import JSONDecodeError
 from socket import socket
 import threading
 import re
@@ -25,7 +27,6 @@ class ClientListener(threading.Thread):
             except:
                 print("Unable to receive data")
             self.handle_msg(data)
-            time.sleep(0.1)
         print("Ending client thread for", self.address)
 
     def quit(self):
@@ -37,10 +38,31 @@ class ClientListener(threading.Thread):
     def handle_msg(self, data):
         if data is None or data == '':
             pass
-        print("SEND BY SERVER COLLECTED : ",data)
-        #username_result = re.search('^USERNAME (.*)$', data)
-        game = AdaptaterGame.jsonToGame(data)
-        if game is not None and game.connected():
-            #DO SOMETHINg
-            self.server.echo(game.toString())
+        jsonParsed = None
+        try:
+            jsonParsed = json.loads(data)
+        except JSONDecodeError:
+            print("ERROR PARSING DATA : ", data)
+        print("SEND BY SERVER COLLECTED : ", data)
+        if jsonParsed is not None and jsonParsed["isGame"]:
+            # username_result = re.search('^USERNAME (.*)$', data)
+            game = AdaptaterGame.jsonToGame(data)
+            if game is not None and game.connected():
+                # DO SOMETHINg
+                self.server.echo(game.toString())
+        elif jsonParsed is not None:
+            # MESSAGE
+            with open('message.txt') as json_file:
+                data_message = json.load(json_file)
+
+            if (len(data_message['message']) > 6):
+                del data_message['message'][1]
+
+            data_message['message'].append({
+                'isGame': False,
+                'text_message': data
+            })
+
+            with open('message.txt', 'w') as outfile:
+                json.dump(data_message, outfile)
 

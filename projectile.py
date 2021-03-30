@@ -23,6 +23,7 @@ class Projectile(pygame.sprite.Sprite):
     def remove(self):
         #supprimer le projectile
         self.player.all_projectiles.remove(self)
+        self.player.canShoot = True
 
     def move(self):
         self.rect.x += self.velocity
@@ -30,6 +31,7 @@ class Projectile(pygame.sprite.Sprite):
         for monster in self.player.game.check_collision(self, self.player.game.all_monsters):
             #supprimer le projectile
             self.remove()
+
             # infliger des degats
             monster.damage(self.player.attack)
 

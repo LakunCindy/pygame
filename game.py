@@ -1,6 +1,8 @@
 import json
 
 import pygame
+
+from messagerie import Messagerie
 from player import Player
 from monster import Monster, BadWorm, Boss
 from comet_event import CometFallEvent
@@ -28,7 +30,8 @@ class Game:
         self.pressed = {}
         self.font = pygame.font.Font("assets/font.ttf", 25)
         self.sound_manager = SoundManager()
-    
+        #APPEL MESSAGE
+        self.message = Messagerie(self)
 
     def setId(self, id):
         self.id = id
@@ -62,6 +65,7 @@ class Game:
         #afficher le score sur l'ecran
         score_text = self.font.render(f"Score: {self.score}", 1, (0,0,0))
         screen.blit(score_text,(20,20))
+        self.message.init_messagerie(screen)
 
         #appliquer image du joueur
         screen.blit(self.player.image, self.player.rect)

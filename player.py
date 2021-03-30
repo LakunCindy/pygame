@@ -20,6 +20,7 @@ class Player(animation.AnimateSprite):
          #CODE JUMP
          self.velocity_jump = 10    
          self.isJump = False
+         self.canShoot = True
          # self.jumpCount = 8
 
       def damage(self,amount):
@@ -65,6 +66,7 @@ class Player(animation.AnimateSprite):
       def launch_projectile(self):
          #creer une nouvelle instance de la classe projectile
          self.all_projectiles.add(Projectile(self))
+         self.canShoot = False
          self.game.sound_manager.play('tir')
 
       def move_right(self):
