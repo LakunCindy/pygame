@@ -165,7 +165,7 @@ def sendMessageChat(event, user_text, active):
             if event.type == pygame.KEYDOWN:
                 # Remove leter
                 if user_text != '' and event.key == pygame.K_RETURN:
-                    data = json.dumps({"isGame": False, "msg": user_text})
+                    data = json.dumps({"isGame": False, "msg": client.username + ": "+ user_text})
                     client.send(data)
                     active = False
                 if active:

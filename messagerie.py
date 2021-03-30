@@ -17,6 +17,7 @@ class Messagerie:
         with open('message.txt') as json_file:
             self.text_message = json.load(json_file)
         i = 0
+        print("COUOCU ",self.text_message)
         for m in self.text_message['message']:
             if(i == 0):
                 message_text = self.game.font.render(m['text_message'], 1, (0,0,0))

@@ -17,7 +17,7 @@ class ClientListener(threading.Thread):
         self.socket = socket
         self.address = address
         self.listening = True
-        self.username = "No username"
+
 
     def run(self):
         while self.listening:
@@ -57,10 +57,8 @@ class ClientListener(threading.Thread):
 
             if (len(data_message['message']) > 6):
                 del data_message['message'][1]
-
             data_message['message'].append({
-                'isGame': False,
-                'text_message': data
+                'text_message': jsonParsed['msg']
             })
 
             with open('message.txt', 'w') as outfile:
