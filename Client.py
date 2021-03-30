@@ -13,54 +13,39 @@ import pygame
 
 pygame.init()
 
-#définir une clock
+# définir une clock
 clock = pygame.time.Clock()
 FPS = 60
 
-#générer la fenetre du jeu
+# générer la fenetre du jeu
 pygame.display.set_caption("World War Worms")
 width = 1080
 height = 720
 screen = pygame.display.set_mode((width, height))
 
-#Charger l'arrière plan
+# Charger l'arrière plan
 background = pygame.image.load('assets/background.jpg')
 
-#importer charger notre bannière
+# importer charger notre bannière
 banner = pygame.image.load('assets/banner.png')
-banner = pygame.transform.scale(banner,(400,400))
+banner = pygame.transform.scale(banner, (400, 400))
 banner_rect = banner.get_rect()
 banner_rect.x = math.ceil(screen.get_width() / 3.33)
 
-#importer les inputs
-#PSEUDO INPUT
+# importer les inputs
+# PSEUDO INPUT
 pseudo_placeholder = 'Pseudo'
-pseudo_text = ''
-pseudo_input_rect = pygame.Rect(screen.get_width()/2.5,350,200,32)
-pseudo_active = False
 
-#SERVEUR INPUT
-server_placeholder = 'Serveur'
-server_text = 'localhost'
-server_input_rect = pygame.Rect(screen.get_width()/2.5,420,200,32)
-server_active = False
+pseudo_input_rect = pygame.Rect(screen.get_width() / 2.5, 350, 200, 32)
 
-#PORT INPUT
-port_placeholder = 'Port'
-port_text = '59001'
-port_input_rect = pygame.Rect(screen.get_width()/2.5,500,200,32)
-port_active = False
-
-base_font = pygame.font.Font("assets/font.ttf",20)
+base_font = pygame.font.Font("assets/font.ttf", 20)
 color_active = pygame.Color('orange')
 color_passive = pygame.Color('gray15')
 color = color_passive
 
-
-
-#importer charger notre bouton pour lancer la partie
+# importer charger notre bouton pour lancer la partie
 play_button = pygame.image.load('assets/button.png')
-play_button = pygame.transform.scale(play_button, (400,150))
+play_button = pygame.transform.scale(play_button, (400, 150))
 play_button_rect = play_button.get_rect()
 play_button_rect.x = math.ceil(screen.get_width() / 3.33)
 play_button_rect.y = math.ceil(screen.get_height() / 1.3)
@@ -69,6 +54,8 @@ play_button_rect.y = math.ceil(screen.get_height() / 1.3)
 user_text = ''
 input_rect = pygame.Rect(25, 350, 600, 32)
 active = False
+
+
 class Client:
 
     def __init__(self):
@@ -77,6 +64,7 @@ class Client:
         port = 5555
         self.socket.connect((serv, port))
         self.listening = True
+        self.username = 'No Name No Gain'
         self.game = Game()
 
     def listener(self):
@@ -137,13 +125,7 @@ class Client:
                 print("PROJECTILE 2")
                 self.game.player2.launch_projectile()
                 self.game.player2.shoot = False
-            #else CHAT 
-
-
-
-
-
-
+            # else CHAT
 
         # if not self.game.is_ready:
         # print("DONE AVEC LA GAME")
@@ -171,8 +153,8 @@ class Client:
             client.game.start()
             client.game.sound_manager.play('click')
 
+
 def sendMessageChat(event, user_text, active):
-    print(event)
     if input_rect.collidepoint(event.pos):
         active = True
     while active:
@@ -201,6 +183,8 @@ def sendMessageChat(event, user_text, active):
             screen.blit(text_surface, (input_rect.x + 5, input_rect.y + 5))
 
             pygame.display.update()
+
+
 def main(client):
     running = True
 
@@ -234,7 +218,7 @@ def main(client):
                     with open('message.txt', 'w') as outfile:
                         json.dump(data_message, outfile)
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    sendMessageChat(event,user_text, active)
+                    sendMessageChat(event, user_text, active)
 
                     # détecter si un joueur lache une touche du clavier
                 elif event.type == pygame.KEYDOWN:
@@ -253,7 +237,7 @@ def main(client):
                             if client.game.is_host:
                                 if client.game.player.canShoot:
                                     client.game.player.shoot = True
-                            else :
+                            else:
                                 if client.game.player2.canShoot:
                                     client.game.player2.shoot = True
 
@@ -263,19 +247,33 @@ def main(client):
                 elif event.type == pygame.KEYUP:  # si la touche n'est plus utilisé
                     client.game.pressed[event.key] = False
 
-
-
             # fixer le nombre de fps
             clock.tick(FPS)
 
 
 def menu_screen(client):
     run = True
+    pseudo_text = ''
+    pseudo_active = False
     while run:
         clock.tick(60)
         screen.blit(background, (0, 0))
         screen.blit(play_button, play_button_rect)
+
+        # Form
+        if pseudo_active:
+            color = color_active
+        else:
+            color = color_passive
+            # PSEUDO
+        pygame.draw.rect(screen, color, pseudo_input_rect)
+        pseudo_placeholder_surface = base_font.render(pseudo_placeholder, True, (0, 0, 0))
+        pseudo_text_surface = base_font.render(pseudo_text, True, (255, 255, 255))
+        pseudo_input_rect.w = max(200, pseudo_text_surface.get_width() + 10)
+        screen.blit(pseudo_text_surface, (pseudo_input_rect.x + 5, pseudo_input_rect.y + 5))
+        screen.blit(pseudo_placeholder_surface, (pseudo_input_rect.x + 5, pseudo_input_rect.y - 30))
         screen.blit(banner, banner_rect)
+
         pygame.display.flip()
 
         for event in pygame.event.get():
@@ -283,7 +281,22 @@ def menu_screen(client):
                 pygame.quit()
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                run = False
+                if pseudo_input_rect.collidepoint(event.pos):
+                    pseudo_active = True
+                else:
+                    pseudo_active = False
+
+                if play_button_rect.collidepoint(event.pos):
+                    if pseudo_text != '':
+                        client.username = pseudo_text
+                    run = False
+            if event.type == pygame.KEYDOWN:
+                if pseudo_active:
+                    if event.key == pygame.K_RETURN:
+                        pseudo_text = pseudo_text[:-1]
+                    else:
+                        pseudo_text += event.unicode
+
     main(client)
 
 
