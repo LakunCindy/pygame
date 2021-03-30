@@ -41,7 +41,7 @@ class Server:
                 (client_socket, client_adress) = self.listener.accept()
                 print("Connected to:", client_adress)
                 self.idCount += 1
-                p = 0
+                #p = 0
                 self.gameId = (self.idCount - 1) // 2
                 if self.idCount % 2 == 1:
                     game = Game()
@@ -50,7 +50,7 @@ class Server:
                     print("Creating a new game...")
                 else:
                     self.games[self.gameId].is_ready = True
-                    p = 1
+                    #p = 1
                 game = self.games[self.gameId]
                 #socket.socket.sendall(AdaptaterGame.gameToJson(game))
             except socket.error:

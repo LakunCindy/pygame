@@ -207,6 +207,7 @@ def main(client):
                 # si l'event est fermeture de fenetre
                 if event.type == pygame.QUIT:
                     running = False
+
                     pygame.quit()
                     # RESET MESSAGERIE
                     data_message = {}
@@ -217,6 +218,7 @@ def main(client):
                     })
                     with open('message.txt', 'w') as outfile:
                         json.dump(data_message, outfile)
+
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     sendMessageChat(event, user_text, active)
 
@@ -248,6 +250,7 @@ def main(client):
                     client.game.pressed[event.key] = False
 
             # fixer le nombre de fps
+
             clock.tick(FPS)
 
 
@@ -292,7 +295,7 @@ def menu_screen(client):
                     run = False
             if event.type == pygame.KEYDOWN:
                 if pseudo_active:
-                    if event.key == pygame.K_RETURN:
+                    if event.key == pygame.K_BACKSPACE:
                         pseudo_text = pseudo_text[:-1]
                     else:
                         pseudo_text += event.unicode
