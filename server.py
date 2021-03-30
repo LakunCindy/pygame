@@ -16,7 +16,7 @@ pygame.init()
 class Server:
 
     def __init__(self):
-        serv = os.environ["CONNECTIONIP"]
+        serv = "0.0.0.0"
         port = 5555
         self.connected = set()
         self.games = {}

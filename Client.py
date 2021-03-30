@@ -61,8 +61,10 @@ class Client:
     def __init__(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         serv = os.environ["CONNECTIONIP"]
+        print("IP ",serv)
         port = 5555
         self.socket.connect((serv, port))
+        print("SERVER LOAD")
         self.listening = True
         self.username = 'No Name No Gain'
         self.game = Game()
